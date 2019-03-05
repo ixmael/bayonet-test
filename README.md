@@ -6,6 +6,8 @@ This proyect is developed with Python3. You can install dependencies in the host
 pip install -r requeriments.txt
 ```
 
+The proyect requires a *.env* file to provide parameters to connect to database. An example of the content of the file is in *.env.test*.
+
 ## Set up a database
 This step is to populate a MySQL database from the csv's data.
 
