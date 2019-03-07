@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import pymysql.cursors
 from dateutil.parser import parse
 
-load_dotenv(verbose=True)
+load_dotenv()
 
 if __name__ == "__main__":
     values = []
