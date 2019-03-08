@@ -1,6 +1,8 @@
 <template>
   <div class="home-view">
-    Ejercicio para analizar la información de una base de datos.
+    <h1>
+      Ejercicio para analizar la información de una base de datos.
+    </h1>
   </div>
 </template>
 

@@ -25,10 +25,13 @@ app = Flask('bayonet',
 
 @app.route('/total-transacciones')
 def get_total_transactions():
-    return jsonify({
-        'name': 'total-transactions',
-        'data': 'test',
-    })
+    with connection.cursor() as cursor:
+        data = util.get_total_transactions(cursor)
+
+        return jsonify(data)
+    
+    flask.abort(500)
+    flask.abort(Response('Error'))
 
 @app.route('/frecuencia-correos')
 def get_email_frec():
@@ -42,7 +45,7 @@ def get_email_frec():
         return jsonify(transactions)
     
     flask.abort(500)
-    flask.abort(Response(''))
+    flask.abort(Response('Error'))
 
 @app.route('/frecuencia-nombres')
 def get_name_frec():
@@ -58,7 +61,7 @@ def get_name_frec():
         return jsonify(transactions)
     
     flask.abort(500)
-    flask.abort(Response(''))
+    flask.abort(Response('Error'))
 
 @app.route('/frecuencia-tarjetas')
 def get_card_frec():
