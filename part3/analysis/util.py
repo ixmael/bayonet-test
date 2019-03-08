@@ -107,6 +107,6 @@ def get_avg_amounts(cursor):
         if not r[0] in transactions:
             transactions[r[0]] = 0
         
-        transactions[r[0]] = r[1]
+        transactions[r[0]] = float(r[1])
 
     return transactions

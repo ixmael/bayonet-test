@@ -81,10 +81,13 @@ def get_card_frec():
 
 @app.route('/monto-promedio')
 def get_avg_amount():
-    return jsonify({
-        'name': 'avg_amount',
-        'data': 'test',
-    })
+    with connection.cursor() as cursor:
+        data = util.get_avg_amounts(cursor)
+
+        return jsonify(data)
+    
+    flask.abort(500)
+    flask.abort(Response('Error'))
 
 @app.route('/')
 def home():
