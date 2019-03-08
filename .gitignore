@@ -1,3 +1,5 @@
+part3/static/*
+node_modules
 py3env
 dataset.csv
 .env
