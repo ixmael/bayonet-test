@@ -35,7 +35,10 @@ def get_metadata():
 @app.route('/total-transacciones')
 def get_total_transactions():
     with connection.cursor() as cursor:
-        data = util.get_total_transactions(cursor)
+        month = request.args.get('month')
+        year = request.args.get('year')
+
+        data = util.get_total_transactions(cursor, month, year)
 
         return jsonify(data)
     
@@ -45,7 +48,10 @@ def get_total_transactions():
 @app.route('/frecuencia-correos')
 def get_email_frec():
     with connection.cursor() as cursor:
-        data = util.get_email_frec(cursor)
+        month = request.args.get('month')
+        year = request.args.get('year')
+
+        data = util.get_email_frec(cursor, month, year)
 
         transactions = {}
         for transaction_type, emails in data.items():
@@ -59,7 +65,10 @@ def get_email_frec():
 @app.route('/frecuencia-nombres')
 def get_name_frec():
     with connection.cursor() as cursor:
-        data = util.get_names_frec(cursor)
+        month = request.args.get('month')
+        year = request.args.get('year')
+
+        data = util.get_names_frec(cursor, month, year)
 
         transactions = {}
         for transaction_type, names in data.items():
@@ -75,7 +84,10 @@ def get_name_frec():
 @app.route('/frecuencia-tarjetas')
 def get_card_frec():
     with connection.cursor() as cursor:
-        data = util.get_card_frec(cursor)
+        month = request.args.get('month')
+        year = request.args.get('year')
+
+        data = util.get_card_frec(cursor, month, year)
 
         transactions = {}
         for transaction_type, names in data.items():

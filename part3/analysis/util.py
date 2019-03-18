@@ -2,10 +2,11 @@
 '''
 import re
 
-def get_total_transactions(cursor):
+def get_total_transactions(cursor, month=None, year=None):
     '''Count the transactions
     '''
-    query = 'SELECT transaction_status, COUNT(transaction_status) AS transactions FROM `transaction` GROUP BY transaction_status ORDER BY transactions;'
+    where = get_where_filter(month, year)
+    query = 'SELECT transaction_status, COUNT(transaction_status) AS transactions FROM `transaction` {} GROUP BY transaction_status ORDER BY transactions;'.format(where)
     cursor.execute(query)
 
     transactions = {}
@@ -14,12 +15,13 @@ def get_total_transactions(cursor):
     
     return transactions
 
-def get_email_frec(cursor):
+def get_email_frec(cursor, month=None, year=None):
     '''Email domain frecuency by transaction type
     '''
     transactions = {}
 
-    query = 'SELECT id, transaction_status, email FROM transaction ORDER BY transaction_status;'
+    where = get_where_filter(month, year)
+    query = 'SELECT id, transaction_status, email FROM transaction {} ORDER BY transaction_status;'.format(where)
     cursor.execute(query)
 
     for r in cursor:
@@ -35,12 +37,13 @@ def get_email_frec(cursor):
     
     return transactions
 
-def get_names_frec(cursor):
+def get_names_frec(cursor, month=None, year=None):
     '''Frecuency the last name and the firts name by transaction types
     '''
     transactions = {}
 
-    query = 'SELECT id, transaction_status, cardholder_name FROM transaction ORDER BY transaction_status;'
+    where = get_where_filter(month, year)
+    query = 'SELECT id, transaction_status, cardholder_name FROM transaction {} ORDER BY transaction_status;'.format(where)
     cursor.execute(query)
 
     for r in cursor:
@@ -66,12 +69,13 @@ def get_names_frec(cursor):
     
     return transactions
 
-def get_card_frec(cursor):
+def get_card_frec(cursor, month=None, year=None):
     '''Frecuency of the card ids by transaction type
     '''
     transactions = {}
 
-    query = 'SELECT id, transaction_status, card_bin, card_last_4 FROM transaction ORDER BY transaction_status;'
+    where = get_where_filter(month, year)
+    query = 'SELECT id, transaction_status, card_bin, card_last_4 FROM transaction {} ORDER BY transaction_status;'.format(where)
     cursor.execute(query)
 
     for r in cursor:
@@ -128,7 +132,7 @@ def get_metadata(cursor):
     return metadata
 
 def get_where_filter(month, year):
-    where = None
+    where = ''
 
     wheres = []
     if month:
