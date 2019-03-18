@@ -1,0 +1,25 @@
+{
+  "presets": [
+    "@babel/env",
+    "@vue/app"
+  ],
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": ["./src"],
+        "alias": {
+          "~": "./src",
+          "@components": "./src/components",
+          "@mixins": "./src/mixins",
+          "@services": "./src/services",
+          "@themes": "./src/themes",
+          "@views": "./src/views"
+        }
+      }
+    ],
+    "babel-plugin-transform-class-properties",
+    "babel-plugin-syntax-flow",
+    "babel-plugin-transform-flow-strip-types"
+  ]
+}

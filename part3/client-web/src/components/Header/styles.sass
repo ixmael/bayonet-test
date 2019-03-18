@@ -1,0 +1,68 @@
+$hamburger-color: #FFFFFF
+
+header
+  & .menu
+    align-items: center
+    background: #00A795
+    display: flex
+    justify-content: space-between
+    position: relative
+    z-index: 2000
+
+    & .brand
+      align-items: center
+      display: flex
+      padding: 10px
+
+      & > a
+        color: #FFFFFF
+        font-weight: bold
+        text-transform: uppercase
+        text-decoration: none
+      
+      & > div
+        margin-left: 20px
+    
+    & .menu-toggle
+      .hamburger.is-active .hamburger-inner, .hamburger.is-active .hamburger-inner::before, .hamburger.is-active .hamburger-inner::after
+        background-color: $hamburger-color
+      
+      .hamburger-inner, .hamburger-inner::before, .hamburger-inner::after
+        background-color: $hamburger-color
+  
+  & .navigation
+    position: absolute
+    background: #4C5753
+    padding: 10px 0
+    transform: translateY(-100vh)
+    transition: transform 0.5s
+    transition-timing-function: ease-in-out
+    z-index: 1000
+    width: 100vw
+
+    &.open
+      transform: translateY(0)
+    
+    & .wrapper
+      display: flex;
+      flex-direction: column;
+
+      & a
+        color: #FFFFFF
+        font-size: 1.3rem
+        padding: 10px
+        text-align: left
+        text-decoration: none
+        text-transform: uppercase
+
+        & .desc
+          display: block
+          color: #4C5753
+          font-size: 1rem
+        
+        &:hover
+          background: rgba(255,255,255,0.5)
+          color: #000000
+
+          & .desc
+            color: #000000
