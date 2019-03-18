@@ -10,13 +10,18 @@ header
     z-index: 2000
 
     & .brand
+      align-items: center
+      display: flex
       padding: 10px
 
-      & a
+      & > a
         color: #FFFFFF
         font-weight: bold
         text-transform: uppercase
         text-decoration: none
+      
+      & > div
+        margin-left: 20px
     
     & .menu-toggle
       .hamburger.is-active .hamburger-inner, .hamburger.is-active .hamburger-inner::before, .hamburger.is-active .hamburger-inner::after

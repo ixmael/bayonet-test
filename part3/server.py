@@ -23,6 +23,15 @@ app = Flask('bayonet',
     static_url_path='/static'
 )
 
+@app.route('/metadata')
+def get_metadata():
+    with connection.cursor() as cursor:
+        data = util.get_metadata(cursor)
+        return jsonify(data)
+
+    flask.abort(500)
+    flask.abort(Response('Error'))
+
 @app.route('/total-transacciones')
 def get_total_transactions():
     with connection.cursor() as cursor:
@@ -82,7 +91,10 @@ def get_card_frec():
 @app.route('/monto-promedio')
 def get_avg_amount():
     with connection.cursor() as cursor:
-        data = util.get_avg_amounts(cursor)
+        month = request.args.get('month')
+        year = request.args.get('year')
+
+        data = util.get_avg_amounts(cursor, month, year)
 
         return jsonify(data)
     

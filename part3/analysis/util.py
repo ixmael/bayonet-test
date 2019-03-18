@@ -95,12 +95,13 @@ def get_card_frec(cursor):
     
     return transactions
 
-def get_avg_amounts(cursor):
+def get_avg_amounts(cursor, month=None, year=None):
     '''Get the average amounts by transaction type
     '''
     transactions = {}
 
-    query = 'SELECT transaction_status, AVG(transaction_amount) from transaction GROUP BY transaction_status;'
+    where = get_where_filter(month, year)
+    query = 'SELECT transaction_status, AVG(transaction_amount) FROM transaction {} GROUP BY transaction_status;'.format(where)
     cursor.execute(query)
 
     for r in cursor:
@@ -110,3 +111,32 @@ def get_avg_amounts(cursor):
         transactions[r[0]] = float(r[1])
 
     return transactions
+
+def get_metadata(cursor):
+    metadata = {}
+
+    query = 'SELECT MAX(transaction_time) from transaction LIMIT 1;'
+    cursor.execute(query)
+    data = cursor.fetchone()
+    metadata['max'] = data[0]
+
+    query = 'SELECT MIN(transaction_time) from transaction LIMIT 1;'
+    cursor.execute(query)
+    data = cursor.fetchone()
+    metadata['min'] = data[0]
+
+    return metadata
+
+def get_where_filter(month, year):
+    where = None
+
+    wheres = []
+    if month:
+        wheres.append('MONTH(transaction_time) = {}'.format(month))
+    if year:
+        wheres.append('YEAR(transaction_time) = {}'.format(year))
+
+    if len(wheres) > 0:
+        where = ' WHERE {}'.format(' AND '.join(wheres))
+
+    return where
