@@ -5,7 +5,7 @@
     </h1>
     <DataFilter @filter="handleFilter" />
     <div v-if="downloaded">
-      <div v-if="transactions">
+      <div v-if="transactions.length > 0">
         <table>
           <thead>
             <tr>
@@ -29,7 +29,7 @@
           </tbody>
         </table>
       </div>
-      <div v-else>
+      <div class="filtering" v-else>
         No hay resultados
       </div>
     </div>
@@ -38,7 +38,7 @@
       <div class="loading-message">Esperando la carga de los datos</div>
     </div>
     <div class="filtering" v-else>
-      Preparar
+      No se ha solicitado ningún dato.
     </div>
   </div>
 </template>
@@ -48,6 +48,8 @@ import Vue from 'vue';
 import { PulseLoader } from 'vue-spinner/dist/vue-spinner.min.js';
 import ViewMixin from '@mixins/ViewMixin';
 import DataFilter from '@components/DataFilter';
+
+import './styles.sass';
 
 export default {
   name: 'average-view',
@@ -67,6 +69,7 @@ export default {
     handleFilter(params) {
       this.downloading = true;
       this.downloaded = false;
+
       Vue.axios.get(this.$route.path, { params }).then((response) => {
         this.transactions = [];
         Object.keys(response.data).forEach(transaction_type => {
@@ -77,7 +80,7 @@ export default {
         });
         this.downloaded = true;
         this.downloading = false;
-      })
+      });
     },
   },
 }

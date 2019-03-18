@@ -3,16 +3,25 @@
     <h1>
       Total de transacciones
     </h1>
+    <DataFilter @filter="handleFilter" />
     <div v-if="downloaded">
-      <GChart
-        type="ColumnChart"
-        :data="transactions"
-        :options="chartOptions"
-      />
+      <div v-if="transactions.length > 1">
+        <GChart
+          type="ColumnChart"
+          :data="transactions"
+          :options="chartOptions"
+        />
+      </div>
+      <div class="filtering" v-else>
+        No hay resultados
+      </div>
     </div>
-    <div class="loading" v-else>
+    <div class="loading" v-else-if="downloading">
       <pulse-loader color="#FF9F1C" size="20px"></pulse-loader>
       <div class="loading-message">Esperando la carga de los datos</div>
+    </div>
+    <div class="filtering" v-else>
+      No se ha solicitado ningún dato.
     </div>
   </div>
 </template>
@@ -21,11 +30,15 @@
 import Vue from 'vue';
 import { GChart } from 'vue-google-charts';
 import { PulseLoader } from 'vue-spinner/dist/vue-spinner.min.js';
+import DataFilter from '@components/DataFilter';
+
+import './styles.sass';
 
 export default {
   name: 'total-transaction-view',
   data() {
     return {
+      downloading: false,
       downloaded: false,
       transactions: [
         ['Tipo de transacción', 'Total de transacciones'],
@@ -47,15 +60,24 @@ export default {
   components: {
     PulseLoader,
     GChart,
+    DataFilter,
   },
-  mounted() {
-    Vue.axios.get(this.$route.path).then((response) => {
-      Object.keys(response.data).forEach(transaction_type => {
-        this.transactions.push([transaction_type, response.data[transaction_type]]);
-      });
+  methods: {
+    handleFilter(params) {
+      this.downloading = true;
+      this.downloaded = false;
 
-      this.downloaded = true;
-    })
-  }
+      Vue.axios.get(this.$route.path, { params }).then((response) => {
+        this.transactions = [['Tipo de transacción', 'Total de transacciones']];
+
+        Object.keys(response.data).forEach(transaction_type => {
+          this.transactions.push([transaction_type, response.data[transaction_type]]);
+        });
+
+        this.downloaded = true;
+        this.downloading = false;
+      });
+    },
+  },
 }
 </script>
